@@ -8,26 +8,23 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import App from "./App";
-import { AuthProvider } from "./context/useAuth";
 import reportWebVitals from "./reportWebVitals";
-import { ApolloProvider } from "@apollo/client";
-
-// client
-import apolloClient from "./plugins/apollo.plugin";
+import { AuthProvider } from "./context/useAuth";
+import { AppDataProvider } from "./context/useAppData";
 
 const app = (
-	<React.StrictMode>
-		<BrowserRouter>
-			<ToastContainer />
-			<ApolloProvider client={apolloClient}>
-				<ChakraProvider>
-					<AuthProvider>
-						<App />
-					</AuthProvider>
-				</ChakraProvider>
-			</ApolloProvider>
-		</BrowserRouter>
-	</React.StrictMode>
+  <React.StrictMode>
+    <BrowserRouter>
+      <ToastContainer />
+      <ChakraProvider>
+        <AuthProvider>
+          <AppDataProvider>
+            <App />
+          </AppDataProvider>
+        </AuthProvider>
+      </ChakraProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
 ReactDOM.render(app, document.getElementById("root"));

@@ -1,59 +1,58 @@
-import { Box, Stack, Input } from "@chakra-ui/react";
-import { useState } from "react";
-import AutoSearch, { OptionsProps } from "../../../components/AutoSearch";
-
-const options = [
-	{ value: "chocolate", label: "Chocolate" },
-	{ value: "strawberry", label: "Strawberry" },
-	{ value: "vanilla", label: "Vanilla" },
-];
+import { Box, Stack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import AutoSearch from "../../../components/AutoSearch";
+import { useAppData } from "../../../context/useAppData";
+import { searchFaqTitle } from "../../../context/actions/useSearchParams";
 
 const SearchBox = () => {
-	const [category, setCategory] = useState<OptionsProps | OptionsProps[]>([]);
-	const [params, setParams] = useState<string>("");
+  const {
+    search: { getSearchFaqTitle, searchFaqTitle, clearSearchFaqTitle },
+  } = useAppData();
+  const navigator = useNavigate();
 
-	const handleCategoryChange = (category: OptionsProps | OptionsProps[]) => {
-		setCategory(category);
-	};
+  const handleQuery = (query: string) => {
+    if (query.length > 2) {
+      getSearchFaqTitle(query);
+    } else {
+      clearSearchFaqTitle();
+    }
+  };
 
-	const handleQuery = (query: string) => {
-		setParams(query);
-	};
+  const handleQueryOptionSelected = (item: searchFaqTitle) => {
+    console.log("the query option selected", item);
+    navigator(`/fag/${item.value}`);
+  };
 
-	return (
-		<Stack
-			direction={["column", "row"]}
-			bg="tomato"
-			padding={3}
-			alignItems="center"
-		>
-			<Box width={["100%", "30%"]}>
-				<AutoSearch
-					options={options}
-					isMulti={true}
-					placeholder="Choose Category"
-					onChange={handleCategoryChange}
-					type="category"
-					defaultValue={category}
-				/>
-			</Box>
-			<Box flex={1} width="100%">
-				<Input
-					value={params}
-					variant="filled"
-					onChange={(e) => handleQuery(e.target.value)}
-					placeholder="Search ...."
-					background="white"
-					_active={{
-						background: "white",
-					}}
-					_focus={{
-						background: "white",
-					}}
-				/>
-			</Box>
-		</Stack>
-	);
+  return (
+    <Stack
+      direction={["column", "row"]}
+      bg="tomato"
+      padding={3}
+      alignItems="center"
+    >
+      {/* <Box width={["100%", "30%"]}>
+        <AutoSearch
+          options={options}
+          isMulti={true}
+          placeholder="Choose Category"
+          onChange={handleCategoryChange}
+          type="category"
+          defaultValue={category}
+          onInputChnage={() => {}}
+        />
+      </Box> */}
+      <Box flex={1} width="100%">
+        <AutoSearch
+          options={searchFaqTitle}
+          isMulti={false}
+          placeholder="Search for a question (must enter 3 key letters e.g Lorem) "
+          onChange={handleQueryOptionSelected}
+          type="category"
+          onInputChnage={handleQuery}
+        />
+      </Box>
+    </Stack>
+  );
 };
 
 export default SearchBox;

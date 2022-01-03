@@ -1,21 +1,16 @@
-import { Stack, Grid, GridItem } from "@chakra-ui/react";
-import FaqCard from "../../components/FaqCard";
+import { Stack } from "@chakra-ui/react";
+import React from "react";
 import SearchBox from "./components/SearchBox";
 
 const Landing = () => {
-	return (
-		<Stack spacing={8} marginBottom={100}>
-			<SearchBox />
-			<Grid templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)"]} gap={8}>
-				<GridItem width="100%" boxSizing="border-box" flex={1}>
-					<FaqCard />
-				</GridItem>
-				<GridItem width="100%" boxSizing="border-box" flex={1}>
-					<FaqCard />
-				</GridItem>
-			</Grid>
-		</Stack>
-	);
+  React.useEffect(() => {
+    console.log("calling on initial page render");
+  }, []);
+  return (
+    <Stack spacing={8} marginBottom={100}>
+      <SearchBox />
+    </Stack>
+  );
 };
 
 export default Landing;
